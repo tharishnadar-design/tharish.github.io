@@ -1,216 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DPS DWARKA FC</title>
-  <link rel="icon" type="image/png" href="dps.png">
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPS Dwarka FC Dashboard</title>
 
-    body{
-      background:#0d1117;
-      color:white;
-      line-height:1.6;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    header{
-      background:url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
-      height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-    }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-    header h1{
-      font-size:4rem;
-      text-shadow:2px 2px 10px black;
-    }
+body{
+background:#040814;
+color:white;
+padding:20px;
+}
 
-    header p{
-      font-size:1.3rem;
-      margin-top:10px;
-    }
+.dashboard{
+display:grid;
+grid-template-columns:260px 1fr 340px;
+gap:20px;
+height:95vh;
+}
 
-    nav{
-      position:fixed;
-      top:0;
-      width:100%;
-      background:rgba(0,0,0,0.8);
-      padding:15px;
-      text-align:center;
-      z-index:1000;
-    }
+.card{
+background:#08111f;
+border:1px solid rgba(255,255,255,.08);
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,255,100,.05);
+}
 
-    nav a{
-      color:white;
-      text-decoration:none;
-      margin:0 20px;
-      font-weight:bold;
-      transition:0.3s;
-    }
+.sidebar{
+padding:25px;
+display:flex;
+flex-direction:column;
+}
 
-    nav a:hover{
-      color:#00ff88;
-    }
+.logo{
+text-align:center;
+margin-bottom:30px;
+}
 
-    section{
-      padding:80px 10%;
-    }
+/* Perfecting the image containment for your custom shield logo */
+.logo img {
+width: 90px;
+height: 90px;
+object-fit: contain;
+}
 
-    .about, .players, .matches{
-      margin-top:40px;
-    }
+.logo h2{
+color:#33ff55;
+margin-top:10px;
+font-size:24px;
+}
 
-    h2{
-      text-align:center;
-      margin-bottom:30px;
-      color:#00ff88;
-      font-size:2.5rem;
-    }
+.menu{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
 
-    .player-container{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
-      gap:20px;
-    }
+.menu a{
+text-decoration:none;
+color:white;
+padding:15px;
+border-radius:12px;
+transition:.3s;
+cursor: pointer;
+}
 
-    .player-card{
-      background:#161b22;
-      border-radius:10px;
-      overflow:hidden;
-      text-align:center;
-      transition:0.3s;
-    }
+.menu a:hover,
+.menu a.active{
+background:#0e1b2e;
+color:#32ff59;
+}
 
-    .player-card:hover{
-      transform:translateY(-10px);
-    }
+.main{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
 
-    .player-card img{
-      width:100%;
-      height:250px;
-      object-fit:cover;
-    }
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 25px;
+}
 
-    .player-card h3{
-      margin:15px 0 5px;
-    }
+.club{
+font-size:32px;
+font-weight:700;
+color:#31ff58;
+}
 
-    .match{
-      background:#161b22;
-      margin:15px 0;
-      padding:20px;
-      border-left:5px solid #00ff88;
-    }
+.search{
+width:320px;
+padding:12px;
+border:none;
+outline:none;
+border-radius:12px;
+background:#0e1727;
+color:white;
+}
 
-    footer{
-      background:black;
-      text-align:center;
-      padding:20px;
-      margin-top:40px;
-    }
+.hero{
+height:320px;
+position:relative;
+overflow:hidden;
+border-radius:20px;
+background:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600') center/cover;
+}
 
-    .btn{
-      display:inline-block;
-      margin-top:20px;
-      padding:12px 25px;
-      background:#00ff88;
-      color:black;
-      text-decoration:none;
-      border-radius:30px;
-      font-weight:bold;
-      transition:0.3s;
-    }
+.overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(to right,
+rgba(0,0,0,.7),
+rgba(0,0,0,.4));
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+}
 
-    .btn:hover{
-      background:white;
-    }
-  </style>
+.overlay h1{
+font-size:58px;
+font-weight:800;
+}
+
+.overlay p{
+font-size:22px;
+color:#f4c542;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.stat{
+padding:20px;
+text-align:center;
+}
+
+.stat h3{
+color:#999;
+font-size:14px;
+}
+
+.stat span{
+font-size:34px;
+font-weight:700;
+color:#33ff55;
+}
+
+.bracket{
+padding:25px;
+height:400px;
+}
+
+.bracket h2{
+color:#33ff55;
+margin-bottom:20px;
+}
+
+.bracket-box{
+height:300px;
+display:flex;
+justify-content:center;
+align-items:center;
+border:1px dashed #1f3f2f;
+border-radius:15px;
+font-size:28px;
+font-weight:700;
+color:#ffc107;
+}
+
+.right{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.panel{
+padding:20px;
+}
+
+.panel-title{
+color:#33ff55;
+font-weight:700;
+margin-bottom:15px;
+}
+
+.match{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.team{
+text-align:center;
+flex: 1;
+}
+
+.team img {
+width: 65px;
+height: 65px;
+object-fit: contain;
+margin-bottom: 5px;
+}
+
+.vs{
+font-size:38px;
+font-weight:800;
+padding: 0 10px;
+}
+
+.result{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:30px;
+font-weight:700;
+}
+
+.table{
+width:100%;
+border-collapse:collapse;
+}
+
+.table td{
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.table tr:first-child{
+background:#12371f;
+}
+
+.news{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.news-item{
+display:flex;
+gap:10px;
+}
+
+.news-item img{
+width:90px;
+height:60px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.footer{
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:20px;
+}
+
+.socials{
+display:flex;
+gap:15px;
+font-size:24px;
+}
+
+.page-section {
+    display: none;
+}
+.page-section.active-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.players-grid, .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+.player-card {
+    background: #0e1727;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,.05);
+}
+.player-card h3 {
+    color: #33ff55;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.player-card p {
+    color: #999;
+    font-size: 14px;
+}
+.gallery-grid img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,.05);
+}
+.trophies-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.trophies-list li {
+    background: #0e1727;
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 4px solid #ffc107;
+}
+
+@media(max-width:1200px){
+.dashboard{
+grid-template-columns:1fr;
+height:auto;
+}
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+}
+</style>
 </head>
+
 <body>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#players">Players</a>
-    <a href="#matches">Matches</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<div class="dashboard">
 
-  <header>
-    <h1>DPS DWARKA FC</h1>
-    <p>Passion • Power • Victory</p>
-    <a href="#players" class="btn">Meet the Team</a>
-  </header>
+<div class="sidebar card">
+<div class="logo">
+<img src="2026.png" alt="DPS Dwarka FC Crest">
+<h2>DPS DWARKA FC</h2>
+</div>
 
-  <section id="about" class="about">
-    <h2>About Us</h2>
-    <p>
-      DPS DWARKA FC is a professional football club dedicated to excellence on and off the field.
-      Founded with passion and determination, our mission is to inspire fans through exciting football
-      and strong teamwork.
-    </p>
-  </section>
+<div class="menu">
+<a id="nav-dashboard" class="active" onclick="switchTab('dashboard')">Dashboard</a>
+<a id="nav-team" onclick="switchTab('team')">Team</a>
+<a id="nav-fixtures" onclick="switchTab('fixtures')">Fixtures</a>
+<a id="nav-gallery" onclick="switchTab('gallery')">Gallery</a>
+<a id="nav-trophies" onclick="switchTab('trophies')">Trophies</a>
+</div>
+</div>
 
-  <section id="players" class="players">
-    <h2>Star Players</h2>
+<div class="main">
 
-    <div class="player-container">
+<div class="topbar card">
+<div class="club">DPS DWARKA FC</div>
+<input id="search-input" class="search" placeholder="Search players..." onkeyup="filterRoster()">
+</div>
 
-      <div class="player-card">
-        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80" alt="Player">
-        <h3>NATICK</h3>
-        <p>Forward</p>
-      </div>
-
-      <div class="player-card">
-        <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=600&q=80" alt="Player">
-        <h3>SHAYRA</h3>
-        <p>Midfielder</p>
-      </div>
-
-      <div class="player-card">
-        <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?auto=format&fit=crop&w=600&q=80" alt="Player">
-        <h3>HARISH</h3>
-        <p>Goalkeeper</p>
-      </div>
-
+<div id="sec-dashboard" class="page-section active-section">
+    <div class="hero">
+    <div class="overlay">
+    <h1>UNITED AS ONE</h1>
+    <p>STRONGER TOGETHER</p>
     </div>
-  </section>
-
-  <section id="matches" class="matches">
-    <h2>Upcoming Matches</h2>
-
-    <div class="match">
-      <h3>DPR DWARKA FC vs City Warriors</h3>
-      <p>Date: June 5, 2026</p>
-      <p>Venue: National Stadium</p>
     </div>
 
-    <div class="match">
-      <h3>Thunder FC vs Royal Eagles</h3>
-      <p>Date: June 12, 2026</p>
-      <p>Venue: Thunder Arena</p>
+    <div class="stats">
+    <div class="stat card">
+    <h3>PLAYERS</h3>
+    <span id="player-count">15</span>
+    </div>
+    <div class="stat card">
+    <h3>FIXTURES</h3>
+    <span>03</span>
+    </div>
+    <div class="stat card">
+    <h3>TROPHIES</h3>
+    <span>05</span>
+    </div>
+    <div class="stat card">
+    <h3>WIN RATE</h3>
+    <span>78%</span>
+    </div>
     </div>
 
-  </section>
+    <div class="bracket card">
+    <h2>CLUB CHAMPIONSHIP ROADMAP</h2>
+    <div class="bracket-box">
+    🏆 FINAL COMING SOON
+    </div>
+    </div>
+</div>
 
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <p>Email: info@thunderfc.com</p>
-    <p>Phone: +91 98765 43210</p>
-  </section>
+<div id="sec-team" class="page-section">
+    <div class="panel card">
+        <div class="panel-title" style="font-size:24px;">Team Squad</div>
+        <div class="players-grid" id="players-container">
+            </div>
+    </div>
+</div>
 
-  <footer>
-    <p>© 2026 DPS DWARKA FC | All Rights Reserved</p>
-  </footer>
+<div id="sec-fixtures" class="page-section">
+    <div class="panel card">
+        <div class="panel-title" style="font-size:24px;">Upcoming Fixtures</div>
+        <table class="table">
+            <tr style="background:#12371f; font-weight:600;">
+                <td>Date</td>
+                <td>Match Matchup</td>
+            </tr>
+            <tr>
+                <td>10 Jun</td>
+                <td>DPS Dwarka FC vs City Warriors</td>
+            </tr>
+            <tr>
+                <td>17 Jun</td>
+                <td>DPS Dwarka FC vs Royal Eagles</td>
+            </tr>
+            <tr>
+                <td>24 Jun</td>
+                <td>DPS Dwarka FC vs Victory United</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="sec-gallery" class="page-section">
+    <div class="panel card">
+        <div class="panel-title" style="font-size:24px;">Gallery</div>
+        <div class="gallery-grid">
+            <img src="https://picsum.photos/400/250?1" alt="Gallery 1">
+            <img src="https://picsum.photos/400/250?2" alt="Gallery 2">
+            <img src="https://picsum.photos/400/250?3" alt="Gallery 3">
+            <img src="https://picsum.photos/400/250?4" alt="Gallery 4">
+            <img src="https://picsum.photos/400/250?5" alt="Gallery 5">
+            <img src="https://picsum.photos/400/250?6" alt="Gallery 6">
+        </div>
+    </div>
+</div>
+
+<div id="sec-trophies" class="page-section">
+    <div class="panel card">
+        <div class="panel-title" style="font-size:24px;">Trophies & Achievements</div>
+        <ul class="trophies-list">
+            <li>🏆 School League Champion 2022</li>
+            <li>🏆 Inter School Cup 2023</li>
+            <li>🏆 Youth Championship 2023</li>
+            <li>🏆 Delhi Schools Trophy 2024</li>
+            <li>🏆 District Cup 2025</li>
+        </ul>
+    </div>
+</div>
+
+<div class="footer card">
+<div>DPS Dwarka FC • Sector 12, Dwarka, New Delhi</div>
+<div class="socials">
+<span>📷</span>
+<span>▶️</span>
+<span>📘</span>
+</div>
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="panel card">
+<div class="panel-title">NEXT MATCH</div>
+<div class="match">
+<div class="team">
+<img src="2026.png" alt="DPS Crest">
+<div>DPS DWARKA FC</div>
+</div>
+<div class="vs">VS</div>
+<div class="team">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg" alt="City Warriors Crest">
+<div>CITY WARRIORS</div>
+</div>
+</div>
+</div>
+
+<div class="panel card">
+<div class="panel-title">LAST RESULT</div>
+<div class="result">
+<div>DPS</div>
+<div>2 - 1</div>
+<div>ROYAL</div>
+</div>
+</div>
+
+<div class="panel card">
+<div class="panel-title">LEAGUE TABLE</div>
+<table class="table">
+<tr>
+<td>1</td>
+<td>DPS DWARKA FC</td>
+<td>19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>CITY WARRIORS</td>
+<td>14</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ROYAL EAGLES</td>
+<td>12</td>
+</tr>
+<tr>
+<td>4</td>
+<td>VICTORY UNITED</td>
+<td>8</td>
+</tr>
+</table>
+</div>
+
+<div class="panel card">
+<div class="panel-title">CLUB NEWS</div>
+<div class="news">
+<div class="news-item">
+<img src="https://images.unsplash.com/photo-1552667466-07770ae110d0?w=400" alt="News 1">
+<div>
+<h4>Training Session</h4>
+<p>High intensity practice today.</p>
+</div>
+</div>
+<div class="news-item">
+<img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=400" alt="News 2">
+<div>
+<h4>Match Victory</h4>
+<p>Another step toward glory.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+const playersList = [
+    "Naitik Sharma ", "Arjun Sharma", "Rahul Singh", "Karan Mehta", "Vivek Kumar",
+    "Aryan Gupta", "Rohit Verma", "Harsh Raj", "Yash Sharma", "Aditya Singh",
+    "Manav Kapoor", "Krish Malhotra", "Mohit Rana", "Sahil Yadav", "Dev Arora"
+];
+
+document.getElementById("player-count").innerText = playersList.length;
+
+const container = document.getElementById("players-container");
+playersList.forEach((player, i) => {
+    container.innerHTML += `
+        <div class="player-card">
+            <h3>${player}</h3>
+            <p>Player #${i + 1}</p>
+        </div>
+    `;
+});
+
+function switchTab(targetSectionId) {
+    document.querySelectorAll(".menu a").forEach(link => link.classList.remove("active"));
+    document.querySelectorAll(".page-section").forEach(sec => sec.classList.remove("active-section"));
+    
+    document.getElementById(`nav-${targetSectionId}`).classList.add("active");
+    document.getElementById(`sec-${targetSectionId}`).classList.add("active-section");
+
+    if(targetSectionId === 'team') {
+        document.getElementById("search-input").focus();
+    }
+}
+
+function filterRoster() {
+    switchTab('team');
+    
+    let searchVal = document.getElementById("search-input").value.toLowerCase();
+    let dynamicCards = document.querySelectorAll(".player-card");
+    
+    dynamicCards.forEach(card => {
+        let textInside = card.innerText.toLowerCase();
+        card.style.display = textInside.includes(searchVal) ? "block" : "none";
+    });
+}
+</script>
 
 </body>
 </html>
